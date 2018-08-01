@@ -1,18 +1,9 @@
 <template>
-    <div id="container" v-html=str>
-        <!-- <img src="http://n1.itc.cn/img8/wb/recom/2016/05/09/146272579903814326.JPEG" alt="">
-        <p class="pstyle"> 千寻和爸爸妈妈一同驱车前往新家，在郊外的小路上不慎进入了神秘的隧道——他们去到了另外一个诡异世界—
-        一个中世纪的小镇。远处飘来食物的香味，爸爸妈妈大快朵颐，孰料之后变成了猪！这时小镇上渐渐来了许多样子
-        古怪、半透明的人。</p>
-        
-        <img src="http://n1.itc.cn/img8/wb/recom/2016/05/09/146272579903814326.JPEG" alt="">
-        <p>千寻仓皇逃出，一个叫小白的人救了他，喂了她阻止身体消失的药，并且告诉她怎样去找锅炉爷爷以及汤婆婆，
-        而且必须获得一分工作才能不被魔法变成别的东西。千寻在小白的帮助下幸运地获得了一份在浴池打杂的工作。
-        渐渐她不再被那些怪模怪样的人吓倒，并从小玲那儿知道了小白是凶恶的汤婆婆的弟子。</p>
-        
-        <img src="http://n1.itc.cn/img8/wb/recom/2016/05/09/146272579903814326.JPEG" alt="">
-        <p>一次，千寻发现小白被一群白色飞舞的纸人打伤，为了救受伤的小白，她用河神送给她的药丸驱出了小白身体内的封印
-            以及守封印的小妖精，但小白还是没有醒过来。为了救小白，千寻又踏上了她的冒险之旅。</p> -->
+    <div class="container conlayout">
+        <div class="codeview code3d" v-html="code">
+        </div>
+         <div v-html="str">
+        </div>
     </div>
 </template>
 
@@ -25,8 +16,12 @@ export default {
             data:function(){
                 return {
                     viewcontent:contentString.s.split(""),
+                    codecontent:contentString.code.split(""),
                     newcontent:[],
+                    newcode:[],
                     idx:0,
+                    codeidx:0,
+                    codestring:"",
                     string:""
                 }
             },
@@ -34,148 +29,306 @@ export default {
             computed:{
                 str:function(){
                     return this.string += this.viewcontent[this.idx]
+                },
+                code:function(){
+                    return this.codestring += this.codecontent[this.codeidx]
                 }
             },
             
-            created:function(){
-            },
 
             methods:{
                 play:function(stylecode){
                     this.$nextTick(function(){
                     document.querySelector("style").innerHTML += stylecode
                 })
+                },
+
+                codeplay:function(){
+                        var that=this;
+                        var codelength=this.codecontent.length;
+                    setInterval(function(){
+                        if(that.codeidx === codelength-1){
+                            return
+                        }
+
+                        that.newcode.push(that.codecontent[that.codeidx])
+                        that.codeidx ++;
+
+                    },10)
+                },
+
+                contentplay:function(){
+                    var _this=this;
+                    var length=this.viewcontent.length;
+
+                    setInterval(function(){
+                        if(_this.idx === length-1){
+                        return
+                    }
+
+
+                    _this.newcontent.push(_this.viewcontent[_this.idx])
+                    _this.idx ++;
+                    },25)
                 }
             },
 
             mounted:function(){
-              var _this=this;
-              var length=this.viewcontent.length;
-
-              setInterval(function(){
-                if(_this.idx === length-1){
-                  return
-               }
-
-               _this.newcontent.push(_this.viewcontent[_this.idx])
-               _this.idx ++;
-              },50)
-
+                this.contentplay()
             },
 
             updated:function(){
-               if(this.idx===598){
-                    this.play(`
-                    .borderactive{
-                        border:1px solid #ccc;
-                        border-radius: 3px;
-                        box-shadow: 3px 3px 5px #ccc;
-                    `)
-               }
+               switch(this.idx)
+                    {
+                    
 
+                    case 220:
+                    this.play(`
+                        .container{
+                        margin:0 auto;
+                        border:1px solid #ddd;
+                    }
+                        section{
+                        padding:20px 20px;
+                    }
+                    `)
+                    break;
+
+                    case 390:
+                    this.play(`
+                        .fontstyle{
+                        font-family: 'Avenir', Helvetica, Arial, sans-serif;
+                        text-align: left;
+                        color: #2c3e50;
+                        text-indent:20px;
+                        font-style:italic;
+                    }
+                    `)
+                    break;
+
+                    case 550:
+                    this.play(`
+                     .conlayout{
+                        width:1020px;
+                        display:flex;
+                        flex-direction:row;
+                        justify-content:space-between;
+                        align-items:flex-start;
+                    }
+                    `)
+                    break;
+
+                    case 630:
+                    this.play(`
+                        .content{
+                            flex-grow:0;
+                            flex-shrink:0;
+                            flex-basis:60%;
+                    }`)
+                    break;
+                    }
+
+               switch(this.codeidx)
+                    {
+                    case 200:
+                    this.play(`
+                        .codeview{
+                            margin-right:20px;
+                            flex-grow:0;
+                            flex-shrink:0;
+                            flex-basis:40%;
+                            background:#2B2D27;
+                            color:white;
+                    }
+                    `)
+                    break;
+                    
+                    case 600:
+                    this.play(`
+                        .codered{
+                            color:#B62127;
+                    }`)
+                    break;
+
+                    case 750:
+                    this.play(`
+                        .codegreen{
+                            color:#62A52C;
+                    }
+                        .codeblue{
+                            color:#4AC8EF;
+                    }`)
+                    break;
+
+                    case 960:
+                    this.play(`
+                        .code3d{
+                            perspective: 1000px;
+
+                    }`)
+                    break;
+
+                    case 1000:
+                    this.play(`
+                        pre{
+                        border:1px solid #bbb;
+                    }`)
+                    break;
+
+                    case 1100:
+                    this.play(`
+                        pre{
+                        height:600px;
+                        width:450px;
+                    }`)
+                    break;
+
+                    case 1200:
+                    this.play(`
+                        pre{
+                        overflow:scroll;
+                    }`)
+                    break;
+
+
+                    case 1350:
+                    this.play(`
+                        pre{
+                        transform: rotateY(-15deg) translateZ(-120px) translateX(-50px);
+                    }`)
+                    break;
+                }
+
+            },
+
+            watch:{
+                idx:function(){
+                    if(this.idx===693){
+                        this.codeplay()
+                    }
+                }
             }
 
-
-        //     updated:function(){
-        //         if(this.idx===160){
-        //             document.querySelector("style").innerHTML +=`.fontstyle{
-        //               font-style:italic;
-        //               }
-                      
-        //               `
-        //         }
-        //         if(this.idx===220){
-        //             document.querySelector("style").innerHTML +=`.borderactive{
-        //     border:1px solid #ccc;
-        //     border-radius: 3px;
-        //     box-shadow: 3px 3px 5px #ccc;
-        // }
-        
-        // `
-        //         }
-
-
-        //         if(this.idx===320){
-        //             document.querySelector("style").innerHTML +=`.p3style{
-        //     border:1px solid red;
-        // }
-        
-        // `
-        //     }
-        // },
-            
-            // watch:{
-            //   newcontent:function(){
-            //     this.str += this.viewcontent[this.idx]
-            //     // if(this.idx===420){
-            //     //     document.querySelectorAll(".img1")[0].setAttribute("src","111")
-            //     //     console.log(document.querySelectorAll(".img1")[0].setAttribute("src",""))
-            //     // }
-            //   }
-            // },
-            
-            // computed:{
-            //   tpl:function(){
-            //     return {
-            //       template:this.str
-            //     }
-            //   }
-            // }
 }
 </script>
 
 
 
 <style>
-        .fontstyle{
-            font-style:italic;
-        }
 
-        /* .fontfamily{
-          font-family:'Times New Roman',Serif;
-        } */
-        
-        .fontidented{
-          text-indent: 30px;
-          font-size:15px;
-        }
+    .img1{
+        background: url(../assets/img001.jpg) 0 0 no-repeat;
+    }
 
-        /* .borderactive{
-            border:1px solid #ccc;
-            border-radius: 3px;
-            box-shadow: 3px 3px 5px #ccc;
-        } */
+    .img2{
+        background: url(../assets/img002.jpg) 0 0 no-repeat;
+    }
 
-        .layout{
-          display:flex;
-          flex-direction:row;
-        }
+    .img3{
+        background: url(../assets/img003.jpg) 0 0 no-repeat;
+    }
 
-        .codeborder{
-          border:1px solid green;
-          background:#eee;
-        }
+    .imgcommon{
+        width:220px;
+        height:124px;
+        background-size:contain;
+        float:right;
+        box-shadow:3px 3px 6px 1px #ddd;
+    } 
 
-        div,p,a,img,h5,h6{
-          margin:0px;
-          padding:0px;
-        }
+                      
+/*
+    .container{
+        margin:0 auto;
+        border:1px solid #ddd;
+    }
 
-        #container{
-          width:500px;
-        }
+    section{
+        padding:20px 20px;
+    }
 
-        p{
-          margin-top:20px;
-          text-align:justify;
-        }
 
-        img{
-          width:200px;
-          height:100px;
-          float:right;
-          margin:5px;
-        }
+    .img1{
+        background: url(../assets/img001.jpg) 0 0 no-repeat;
+    }
+
+    .img2{
+        background: url(../assets/img002.jpg) 0 0 no-repeat;
+    }
+
+    .img3{
+        background: url(../assets/img003.jpg) 0 0 no-repeat;
+    }
+
+    .imgcommon{
+        width:220px;
+        height:124px;
+        background-size:contain;
+        float:right;
+        box-shadow:3px 3px 6px 1px #ddd;
+    }
+
+    .conlayout{
+        width:1020px;
+        display:flex;
+        flex-direction:row;
+        justify-content:space-between;
+        align-items:flex-start;
+    }
+
+    .codeview{
+        margin-right:20px;
+        flex-grow:0;
+        flex-shrink:0;
+        flex-basis:40%;
+        background:#2B2D27;
+        color:white;
+    }
+
+    .content{
+        flex-grow:0;
+        flex-shrink:0;
+        flex-basis:60%;
+    }
+
+    .fontstyle{
+        font-family: 'Avenir', Helvetica, Arial, sans-serif;
+        text-align: left;
+        color: #2c3e50;
+        text-indent:20px;
+        font-style:italic;
+    }
+
+
+    .codegreen{
+        color:#62A52C;
+    }
+
+    .codered{
+        color:#B62127;
+    }
+
+    .codeblue{
+        color:#4AC8EF;
+    }
+
+
+    .code3d{
+        perspective: 1000px;
+
+    }
+
+
+    pre{
+        margin:0px;
+        padding:0px;
+        transform: rotateY(-15deg) translateZ(-120px) translateX(-50px);
+        border:1px solid #bbb;
+        height:600px;
+        width:450px;
+        overflow:scroll;
+    }
+    */
 </style>
 
 
